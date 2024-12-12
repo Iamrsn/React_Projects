@@ -1,20 +1,55 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const NumberSelector = () => {
+const NumberSelector = ({
+  SelectedNumber,
+  setSelectedNumber,
+  error,
+  Seterror,
+}) => {
   const arrNumber = [1, 2, 3, 4, 5, 6];
-  const [SelectedNumber,setSelectedNumber]=useState()
-  console.log(SelectedNumber)
+
+  const numberSelectorHandler = (value) => {
+    setSelectedNumber(value);
+    Seterror("");
+  };
   return (
-    <div>
-      {arrNumber.map((v, i) => (
-        <Box key={i} onClick={()=>setSelectedNumber(v)}>{v}</Box>
-      ))}
-    </div>
+    <NumberSelecterContainer>
+      <p className="error">{error}</p>
+      <div className="flex">
+        {arrNumber.map((value, i) => (
+          <Box
+            isSelected={value === SelectedNumber}
+            key={i}
+            onClick={() => numberSelectorHandler(value)}
+          >
+            {value}
+          </Box>
+        ))}
+      </div>
+      <p>Select Number</p>
+    </NumberSelecterContainer>
   );
 };
 
 export default NumberSelector;
+
+const NumberSelecterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  .flex {
+    display: flex;
+    gap: 24px;
+  }
+  p {
+    font-size: 24px;
+    font-weight: 700px;
+  }
+  .error {
+    color: red;
+  }
+`;
 
 const Box = styled.div`
   height: 72px;
@@ -24,7 +59,8 @@ const Box = styled.div`
   place-items: center;
   font-size: 24px;
   font-weight: 700;
+  background-color: ${(props) => (props.isSelected ? "black" : "white")};
+  color: ${(props) => (!props.isSelected ? "black" : "white")};
 `;
-
 
 //fn me koi value pass krwana hai to callback de dena rhta hai..
